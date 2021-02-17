@@ -20,7 +20,16 @@
 			{
 				if (_favoritesScenesPath == null)
 				{
-					_favoritesScenesPath = new List<string>(EditorPrefs.GetString(PREFS_FAVORITE_SCENE).Split(SEPARATOR));
+
+					if (EditorPrefs.HasKey(PREFS_FAVORITE_SCENE) == false)
+					{
+						Debug.LogWarning("Cannot retrives favorites preferences. They might been resetted");
+					}
+
+					string fromSaveString = EditorPrefs.GetString(PREFS_FAVORITE_SCENE);
+
+					string[] scenesPath = fromSaveString.Split(SEPARATOR);
+					_favoritesScenesPath = new List<string>(scenesPath);
 				}
 
 				return _favoritesScenesPath;
@@ -28,9 +37,10 @@
 
 			set
 			{
-				EditorPrefs.SetString(PREFS_FAVORITE_SCENE, string.Join(SEPARATOR.ToString(), value));
-
 				_favoritesScenesPath = value;
+
+				string joinedFavoritesScenesPaths = string.Join(SEPARATOR.ToString(), _favoritesScenesPath);
+				EditorPrefs.SetString(PREFS_FAVORITE_SCENE, joinedFavoritesScenesPaths);
 			}
 		}
 

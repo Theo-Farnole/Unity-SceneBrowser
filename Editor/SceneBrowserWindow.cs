@@ -47,12 +47,46 @@
 
 			_scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
 			{
-				foreach (SceneData scene in _projectScenes)
-				{
-					DrawScene(scene);
-				}
+				DrawFavoritesScenes();
+
+				DrawNotFavoritesScenes();
 			}
 			GUILayout.EndScrollView();
+		}
+
+		private void DrawNotFavoritesScenes()
+		{
+			DrawScenesContent(GetNotFavoritesScenes());
+		}
+
+		private void DrawFavoritesScenes()
+		{
+			SceneData[] favoritesScenes = GetOnlyFavoritesScenes();
+
+			if (favoritesScenes.Length != 0)
+			{
+				DrawScenesContent(favoritesScenes);
+
+				GUIHelper.DrawSeparator();
+			}
+		}
+
+		private SceneData[] GetNotFavoritesScenes()
+		{
+			return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == false).ToArray();
+		}
+
+		private SceneData[] GetOnlyFavoritesScenes()
+		{
+			return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == true).ToArray();
+		}
+
+		private void DrawScenesContent(SceneData[] scenesToDraw)
+		{
+			foreach (SceneData scene in scenesToDraw)
+			{
+				DrawScene(scene);
+			}
 		}
 
 		private void DrawScene(SceneData sceneAsset)
@@ -70,23 +104,13 @@
 		{
 			Texture buttonTexture = Favorites.IsSceneFavorite(sceneAsset) ? SceneBrowserResources.GetFullStarTexture() : SceneBrowserResources.GetEmptyStarTexture();
 
-			GUIHelper.PushBackgroundColor(Color.clear);
 
-			var favoriteButtonStyle = new GUIStyle(GUI.skin.button)
-			{
-				padding = new RectOffset(0, 0, 0, 0),
-			};
-
-			favoriteButtonStyle.normal.background = null;
-
-			bool clickOnFavoriteButton = GUILayout.Button(new GUIContent(buttonTexture), favoriteButtonStyle, GUILayout.Height(EditorGUIUtility.singleLineHeight), GUILayout.Width(EditorGUIUtility.singleLineHeight));
+			bool clickOnFavoriteButton = GUILayout.Button(new GUIContent(buttonTexture), GUILayout.Height(EditorGUIUtility.singleLineHeight), GUILayout.Width(EditorGUIUtility.singleLineHeight + 15));
 
 			if (clickOnFavoriteButton == true)
 			{
 				Favorites.ToggleFavorite(sceneAsset);
 			}
-
-			GUIHelper.PopBackgroundColor();
 		}
 
 		private void DrawOpenButtons(SceneData sceneAsset)

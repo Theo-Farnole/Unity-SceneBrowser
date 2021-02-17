@@ -28,7 +28,7 @@
 
 		public static void PushBackgroundColor(Color color)
 		{
-			_backgroundColorStack.Push(color);
+			_backgroundColorStack.Push(GUI.backgroundColor);
 			GUI.backgroundColor = color;
 		}
 
