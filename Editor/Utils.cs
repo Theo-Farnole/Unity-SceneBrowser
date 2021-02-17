@@ -4,7 +4,7 @@
 	using System.Linq;
 	using UnityEditor;
 
-	public static class SceneBrowserUtils
+	internal static class Utils
 	{
 		public static SceneData[] GetAllSceneDatas()
 		{

@@ -1,13 +1,19 @@
 ﻿namespace TF.SceneBrowser.Editor
 {
+	using System.Collections.Generic;
 	using UnityEditor.SceneManagement;
+	using UnityEngine;
 	using UnityEngine.SceneManagement;
 
+	[System.Serializable]
 	public class SceneData
 	{
 		#region Fields
-		private readonly string _name = null;
-		private readonly string _path = null;
+		[SerializeField]
+		private string _name = null;
+
+		[SerializeField]
+		private string _path = null;
 		#endregion Fields
 
 		public string Name => _name;
@@ -17,7 +23,7 @@
 
 		public SceneData(string sceneAssetPath)
 		{
-			_name = SceneBrowserUtils.GetFileNameWithoutExtension(sceneAssetPath);
+			_name = Utils.GetFileNameWithoutExtension(sceneAssetPath);
 			_path = sceneAssetPath;
 		}
 
@@ -29,6 +35,19 @@
 		public void OpenScene(OpenSceneMode openingMode)
 		{
 			EditorSceneManager.OpenScene(Path, openingMode);
+		}
+
+		public override bool Equals(object obj)
+		{
+			return obj is SceneData sceneData && sceneData.Path == _path && sceneData.Name == _name;
+		}
+
+		public override int GetHashCode()
+		{
+			int hashCode = -827305254;
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_name);
+			hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_path);
+			return hashCode;
 		}
 	}
 }

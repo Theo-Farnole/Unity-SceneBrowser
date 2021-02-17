@@ -1,9 +1,11 @@
 ﻿namespace TF.SceneBrowser.Editor
 {
+	using System.Collections;
+	using System.Collections.Generic;
 	using UnityEditor;
 	using UnityEngine;
 
-	public class GUIHelper
+	internal static class GUIHelper
 	{
 		public static void DrawSeparator()
 		{
@@ -19,6 +21,20 @@
 			GUI.backgroundColor = Color.white;
 
 			return buttonClicked;
+		}
+
+
+		private static Stack<Color> _backgroundColorStack = new Stack<Color>();
+
+		public static void PushBackgroundColor(Color color)
+		{
+			_backgroundColorStack.Push(color);
+			GUI.backgroundColor = color;
+		}
+
+		public static void PopBackgroundColor()
+		{
+			GUI.backgroundColor = _backgroundColorStack.Pop();
 		}
 	}
 }
