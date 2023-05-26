@@ -17,7 +17,7 @@
 		[SerializeField]
 		private Vector2 _scrollPosition = Vector2.zero;
 
-		[MenuItem("Tools/Open SceneBrowser &b")]
+		[MenuItem("Tools/SceneBrowser &b")]
 		public static void OpenWindow()
 		{
 			var window = GetWindow<SceneBrowserWindow>();
