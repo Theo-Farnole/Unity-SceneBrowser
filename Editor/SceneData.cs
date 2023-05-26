@@ -77,10 +77,10 @@
 
         private static void DrawFavoriteButton(SceneData sceneAsset)
         {
-            Texture buttonTexture = Favorites.IsSceneFavorite(sceneAsset) ? SceneBrowserResources.GetFullStarTexture() : SceneBrowserResources.GetEmptyStarTexture();
+            var buttonTexture = Favorites.IsSceneFavorite(sceneAsset) ? Icons.Pinned : Icons.Unpin;
 
 
-            bool clickOnFavoriteButton = GUILayout.Button(new GUIContent(buttonTexture), GUILayout.Height(EditorGUIUtility.singleLineHeight), GUILayout.Width(EditorGUIUtility.singleLineHeight + 15));
+            bool clickOnFavoriteButton = GUILayout.Button(buttonTexture, GUILayout.Height(EditorGUIUtility.singleLineHeight), GUILayout.Width(EditorGUIUtility.singleLineHeight + 15));
 
             if (clickOnFavoriteButton == true)
             {
@@ -92,7 +92,7 @@
         {
             if (sceneAsset.IsLoaded == true)
             {
-                bool shouldClose = GUIHelper.DrawColoredButton("Close", Color.red, GUILayout.Width(WIDTH_PX_BUTTONS * 2 + SPACING_PX_BUTTONS), GUILayout.ExpandWidth(false));
+                bool shouldClose = GUIHelper.DrawColoredButton("Close", Color.red, GUILayout.Width(WIDTH_PX_BUTTONS * 2), GUILayout.ExpandWidth(false));
 
                 if (shouldClose)
                 {
@@ -101,22 +101,17 @@
             }
             else
             {
-                bool shouldOpenScene = GUILayout.Button("Open", GUILayout.Width(WIDTH_PX_BUTTONS), GUILayout.ExpandWidth(false));
+                int clickedButton = GUILayout.Toolbar(-1, new string[] { "Open", "Additive Open" }, GUILayout.Width(WIDTH_PX_BUTTONS * 2));
 
-                if (shouldOpenScene)
+                switch (clickedButton)
                 {
-                    sceneAsset.OpenScene(OpenSceneMode.Single);
-                }
-                else
-                {
+                    case 1:
+                        sceneAsset.OpenScene(OpenSceneMode.Single);
+                        break;
 
-
-                    bool additiveOpen = GUILayout.Button("Additive Open", GUILayout.Width(WIDTH_PX_BUTTONS), GUILayout.ExpandWidth(false));
-
-                    if (additiveOpen)
-                    {
+                    case 2:
                         sceneAsset.OpenScene(OpenSceneMode.Additive);
-                    }
+                        break;
                 }
             }
         }

@@ -18,8 +18,8 @@
         [MenuItem("Tools/SceneBrowser &b")]
         public static void OpenWindow()
         {
-            var window = GetWindow<SceneBrowserWindow>();
-            window.Show();
+            GetWindow<SceneBrowserWindow>("Scenes Browser")
+                .Show();
         }
 
         private void OnEnable()
@@ -38,7 +38,7 @@
 
                 GUILayout.FlexibleSpace();
 
-                if (GUILayout.Button(SceneBrowserResources.Refresh, EditorStyles.toolbarButton))
+                if (GUILayout.Button(Icons.Refresh, EditorStyles.toolbarButton))
                 {
                     SetScenesAssets();
                 }
