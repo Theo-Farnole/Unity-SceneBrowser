@@ -1,154 +1,92 @@
 ﻿namespace TF.SceneBrowser.Editor
 {
-	using System.Collections.Generic;
-	using System.Linq;
-	using UnityEditor;
-	using UnityEditor.SceneManagement;
-	using UnityEngine;
+    using System.Collections.Generic;
+    using System.Linq;
+    using UnityEditor;
+    using UnityEditor.SceneManagement;
+    using UnityEngine;
 
-	internal class SceneBrowserWindow : EditorWindow
-	{
-		private const int WIDTH_PX_BUTTONS = 100;
-		private const int SPACING_PX_BUTTONS = 3;
+    internal class SceneBrowserWindow : EditorWindow
+    {
 
-		[SerializeField]
-		private SceneData[] _projectScenes = null;
+        [SerializeField]
+        private SceneData[] _projectScenes = null;
 
-		[SerializeField]
-		private Vector2 _scrollPosition = Vector2.zero;
+        [SerializeField]
+        private Vector2 _scrollPosition = Vector2.zero;
 
-		[MenuItem("Tools/SceneBrowser &b")]
-		public static void OpenWindow()
-		{
-			var window = GetWindow<SceneBrowserWindow>();
-			window.Show();
-		}
+        [MenuItem("Tools/SceneBrowser &b")]
+        public static void OpenWindow()
+        {
+            var window = GetWindow<SceneBrowserWindow>();
+            window.Show();
+        }
 
-		private void OnEnable()
-		{
-			if (_projectScenes == null || _projectScenes.Length == 0)
-			{
-				SetScenesAssets();
-			}
-		}
+        private void OnEnable()
+        {
+            if (_projectScenes == null || _projectScenes.Length == 0)
+            {
+                SetScenesAssets();
+            }
+        }
 
-		protected void OnGUI()
-		{
-			GUILayout.Label("Scenes Browser", EditorStyles.boldLabel);
+        protected void OnGUI()
+        {
+            GUILayout.Label("Scenes Browser", EditorStyles.boldLabel);
 
-			GUIHelper.DrawSeparator();
+            GUIHelper.DrawSeparator();
 
-			if (GUILayout.Button("Refresh"))
-			{
-				SetScenesAssets();
-			}
+            if (GUILayout.Button("Refresh"))
+            {
+                SetScenesAssets();
+            }
 
-			GUIHelper.DrawSeparator();
+            GUIHelper.DrawSeparator();
 
-			_scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
-			{
-				DrawFavoritesScenes();
+            _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
+            {
+                DrawFavoritesScenes();
 
-				DrawNotFavoritesScenes();
-			}
-			GUILayout.EndScrollView();
-		}
-
-		private void DrawNotFavoritesScenes()
-		{
-			DrawScenesContent(GetNotFavoritesScenes());
-		}
-
-		private void DrawFavoritesScenes()
-		{
-			SceneData[] favoritesScenes = GetOnlyFavoritesScenes();
-
-			if (favoritesScenes.Length != 0)
-			{
-				DrawScenesContent(favoritesScenes);
-
-				GUIHelper.DrawSeparator();
-			}
-		}
-
-		private SceneData[] GetNotFavoritesScenes()
-		{
-			return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == false).ToArray();
-		}
-
-		private SceneData[] GetOnlyFavoritesScenes()
-		{
-			return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == true).ToArray();
-		}
-
-		private void DrawScenesContent(SceneData[] scenesToDraw)
-		{
-			foreach (SceneData scene in scenesToDraw)
-			{
-				DrawScene(scene);
-			}
-		}
-
-		private void DrawScene(SceneData sceneAsset)
-		{
-			GUILayout.BeginHorizontal();
-			{
-				DrawFavoriteButton(sceneAsset);
-				GUILayout.Label(sceneAsset.Name);
-				DrawOpenButtons(sceneAsset);
-			}
-			GUILayout.EndHorizontal();
-		}
-
-		private void DrawFavoriteButton(SceneData sceneAsset)
-		{
-			Texture buttonTexture = Favorites.IsSceneFavorite(sceneAsset) ? SceneBrowserResources.GetFullStarTexture() : SceneBrowserResources.GetEmptyStarTexture();
+                DrawScenesContent(GetNotFavoritesScenes());
+            }
+            GUILayout.EndScrollView();
+        }
 
 
-			bool clickOnFavoriteButton = GUILayout.Button(new GUIContent(buttonTexture), GUILayout.Height(EditorGUIUtility.singleLineHeight), GUILayout.Width(EditorGUIUtility.singleLineHeight + 15));
+        private void DrawFavoritesScenes()
+        {
+            SceneData[] favoritesScenes = GetOnlyFavoritesScenes();
 
-			if (clickOnFavoriteButton == true)
-			{
-				Favorites.ToggleFavorite(sceneAsset);
-			}
-		}
+            if (favoritesScenes.Length != 0)
+            {
+                DrawScenesContent(favoritesScenes);
 
-		private void DrawOpenButtons(SceneData sceneAsset)
-		{
-			if (sceneAsset.IsLoaded == true)
-			{
-				bool shouldClose = GUIHelper.DrawColoredButton("Close", Color.red, GUILayout.Width(WIDTH_PX_BUTTONS * 2 + SPACING_PX_BUTTONS), GUILayout.ExpandWidth(false));
+                GUIHelper.DrawSeparator();
+            }
+        }
 
-				if (shouldClose)
-				{
-					sceneAsset.CloseScene();
-				}
-			}
-			else
-			{
-				bool shouldOpenScene = GUILayout.Button("Open", GUILayout.Width(WIDTH_PX_BUTTONS), GUILayout.ExpandWidth(false));
+        private SceneData[] GetNotFavoritesScenes()
+        {
+            return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == false).ToArray();
+        }
 
-				if (shouldOpenScene)
-				{
-					sceneAsset.OpenScene(OpenSceneMode.Single);
-				}
-				else
-				{
+        private SceneData[] GetOnlyFavoritesScenes()
+        {
+            return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == true).ToArray();
+        }
+
+        private void DrawScenesContent(SceneData[] scenesToDraw)
+        {
+            foreach (SceneData scene in scenesToDraw)
+            {
+                SceneDataGUI.DrawLayout(scene);
+            }
+        }
 
 
-					bool additiveOpen = GUILayout.Button("Additive Open", GUILayout.Width(WIDTH_PX_BUTTONS), GUILayout.ExpandWidth(false));
-
-					if (additiveOpen)
-					{
-						sceneAsset.OpenScene(OpenSceneMode.Additive);
-					}
-				}
-			}
-		}
-
-		private void SetScenesAssets()
-		{
-			_projectScenes = Utils.GetAllSceneDatas();
-		}
-	}
+        private void SetScenesAssets()
+        {
+            _projectScenes = Utils.GetAllSceneDatas();
+        }
+    }
 }
