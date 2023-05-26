@@ -32,14 +32,18 @@
 
         protected void OnGUI()
         {
-            GUILayout.Label("Scenes Browser", EditorStyles.boldLabel);
-
-            GUIHelper.DrawSeparator();
-
-            if (GUILayout.Button("Refresh"))
+            GUILayout.BeginHorizontal(EditorStyles.toolbar);
             {
-                SetScenesAssets();
+                GUILayout.Label("Scenes Browser", EditorStyles.boldLabel);
+
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(SceneBrowserResources.Refresh, EditorStyles.toolbarButton))
+                {
+                    SetScenesAssets();
+                }
             }
+            GUILayout.EndHorizontal();
 
             GUIHelper.DrawSeparator();
 
