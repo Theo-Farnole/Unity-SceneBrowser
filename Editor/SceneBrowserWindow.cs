@@ -45,13 +45,11 @@
             }
             GUILayout.EndHorizontal();
 
-            GUIHelper.DrawSeparator();
-
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             {
                 DrawFavoritesScenes();
 
-                DrawScenesContent(GetNotFavoritesScenes());
+                DrawScenesList(GetNotFavoritesScenes());
             }
             GUILayout.EndScrollView();
         }
@@ -63,7 +61,7 @@
 
             if (favoritesScenes.Length != 0)
             {
-                DrawScenesContent(favoritesScenes);
+                DrawScenesList(favoritesScenes);
 
                 GUIHelper.DrawSeparator();
             }
@@ -79,7 +77,7 @@
             return _projectScenes.Where(x => Favorites.IsSceneFavorite(x) == true).ToArray();
         }
 
-        private void DrawScenesContent(SceneData[] scenesToDraw)
+        private void DrawScenesList(SceneData[] scenesToDraw)
         {
             foreach (SceneData scene in scenesToDraw)
             {
