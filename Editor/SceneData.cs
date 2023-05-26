@@ -50,19 +50,11 @@
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(_path);
             return hashCode;
         }
-
-        public void DrawLayout()
-        {
-
-
-        }
     }
 
     public static class SceneDataGUI
     {
         private const int WIDTH_PX_BUTTONS = 100;
-        private const int SPACING_PX_BUTTONS = 3;
-
 
         public static void DrawLayout(SceneData sceneAsset)
         {

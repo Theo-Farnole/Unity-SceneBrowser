@@ -45,10 +45,18 @@
             }
             GUILayout.EndHorizontal();
 
+
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             {
+                GUILayout.Label("Loaded Scenes", EditorStyles.boldLabel);
+                SceneDataGUI.DrawLayout(GetLoadedScene());
+
+                GUIHelper.DrawSeparator();
+
+
                 DrawFavoritesScenes();
 
+                GUILayout.Label("All Scenes", EditorStyles.boldLabel);
                 DrawScenesList(GetNotFavoritesScenes());
             }
             GUILayout.EndScrollView();
@@ -61,10 +69,18 @@
 
             if (favoritesScenes.Length != 0)
             {
+                GUILayout.Label("Pinned Scenes", EditorStyles.boldLabel);
                 DrawScenesList(favoritesScenes);
 
                 GUIHelper.DrawSeparator();
             }
+        }
+
+        private SceneData GetLoadedScene()
+        {
+            return _projectScenes
+            .Where(x => x.Path == UnityEngine.SceneManagement.SceneManager.GetActiveScene().path)
+            .First();
         }
 
         private SceneData[] GetNotFavoritesScenes()
