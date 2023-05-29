@@ -1,5 +1,6 @@
 ﻿namespace TF.SceneBrowser.Editor
 {
+    using System;
     using System.Linq;
     using UnityEditor;
     using UnityEngine;
@@ -12,6 +13,8 @@
 
         [SerializeField]
         private Vector2 _scrollPosition = Vector2.zero;
+
+        [SerializeField] private string _searchString = "";
 
         [MenuItem("Tools/SceneBrowser &b")]
         public static void OpenWindow()
@@ -32,7 +35,7 @@
         {
             GUILayout.BeginHorizontal(EditorStyles.toolbar);
             {
-                GUILayout.Label("Scenes Browser", EditorStyles.boldLabel);
+                _searchString = GUILayout.TextField(_searchString, GUI.skin.FindStyle("ToolbarSeachTextField"), GUILayout.Width(250));
 
                 GUILayout.FlexibleSpace();
 
@@ -46,26 +49,46 @@
 
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             {
-
-                SceneData loadedScene = GetLoadedScene();
-
-                if (loadedScene != null)
+                if (_searchString != "")
                 {
-                    GUILayout.Label("Loaded Scenes", EditorStyles.boldLabel);
-                    SceneDataGUI.DrawLayout(loadedScene);
+                    var results = SearchScenes(_searchString);
+
+                    GUILayout.Label(string.Format("Results ({0})", results.Length), EditorStyles.boldLabel);
+                    DrawScenesList(results);
                 }
+                else
+                {
+                    SceneData loadedScene = GetLoadedScene();
 
-                GUIHelper.DrawSeparator();
+                    if (loadedScene != null)
+                    {
+                        GUILayout.Label("Loaded Scenes", EditorStyles.boldLabel);
+                        SceneDataGUI.DrawLayout(loadedScene);
+                    }
+
+                    GUIHelper.DrawSeparator();
 
 
-                DrawFavoritesScenes();
+                    DrawFavoritesScenes();
 
-                GUILayout.Label("All Scenes", EditorStyles.boldLabel);
-                DrawScenesList(GetNotFavoritesScenes());
+                    GUILayout.Label("All Scenes", EditorStyles.boldLabel);
+                    DrawScenesList(GetNotFavoritesScenes());
+                }
             }
             GUILayout.EndScrollView();
         }
 
+        private SceneData[] SearchScenes(string searchTerm)
+        {
+            return _projectScenes
+                .Where(x => CaseInsensitiveContains(x.Name, searchTerm))
+                .ToArray();
+
+            static bool CaseInsensitiveContains(string text, string value)
+            {
+                return text.IndexOf(value, StringComparison.OrdinalIgnoreCase) >= 0;
+            }
+        }
 
         private void DrawFavoritesScenes()
         {
