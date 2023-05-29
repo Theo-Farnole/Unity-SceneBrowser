@@ -97,11 +97,11 @@
 
                 switch (clickedButton)
                 {
-                    case 1:
+                    case 0:
                         sceneAsset.OpenScene(OpenSceneMode.Single);
                         break;
 
-                    case 2:
+                    case 1:
                         sceneAsset.OpenScene(OpenSceneMode.Additive);
                         break;
                 }
