@@ -1,9 +1,7 @@
 ﻿namespace TF.SceneBrowser.Editor
 {
-    using System.Collections.Generic;
     using System.Linq;
     using UnityEditor;
-    using UnityEditor.SceneManagement;
     using UnityEngine;
 
     internal class SceneBrowserWindow : EditorWindow
@@ -48,8 +46,14 @@
 
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             {
-                GUILayout.Label("Loaded Scenes", EditorStyles.boldLabel);
-                SceneDataGUI.DrawLayout(GetLoadedScene());
+
+                SceneData loadedScene = GetLoadedScene();
+
+                if (loadedScene != null)
+                {
+                    GUILayout.Label("Loaded Scenes", EditorStyles.boldLabel);
+                    SceneDataGUI.DrawLayout(loadedScene);
+                }
 
                 GUIHelper.DrawSeparator();
 
@@ -80,7 +84,7 @@
         {
             return _projectScenes
             .Where(x => x.Path == UnityEngine.SceneManagement.SceneManager.GetActiveScene().path)
-            .First();
+            .FirstOrDefault();
         }
 
         private SceneData[] GetNotFavoritesScenes()
