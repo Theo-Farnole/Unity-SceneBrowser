@@ -93,7 +93,7 @@
             }
             else
             {
-                int clickedButton = GUILayout.Toolbar(-1, new string[] { "Open", "Additive Open" }, GUILayout.Width(WIDTH_PX_BUTTONS * 2));
+                int clickedButton = GUILayout.Toolbar(-1, new string[] { "Open", "+" }, GUILayout.Width(WIDTH_PX_BUTTONS * 2));
 
                 switch (clickedButton)
                 {
