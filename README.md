@@ -18,4 +18,4 @@ Project supports Unity Package Manager. To install the project as a Git package 
 
 1. In Unity, open **Window** -> **Package Manager**.
 2. Press the **+** button, choose "**Add package from git URL...**"
-3. Enter "https://github.com/Theo-Farnole/Unity-SceneBrowser.git#1.0.0" and press **Add**.
+3. Enter "https://github.com/Theo-Farnole/Unity-SceneBrowser.git#1.0.2" and press **Add**.
