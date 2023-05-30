@@ -8,8 +8,7 @@ A powerful tool designed to enhance your workflow by providing a faster and more
 - **Efficient Scene Navigation**     
 Say goodbye to manually searching through the Unity Editor's project window or having to remember scene names. With the Scenes Browser, you can quickly locate and switch between scenes directly from a dedicated window, streamlining your workflow.
 
-- **Pinning/Favoriting Scenes**    
- The Unity Scenes Browser introduces a handy feature that allows you to pin or favorite specific scenes for quick and easy acces
+- **Pinning/Favoriting Scenes**
 
 ## Installation
 ### Git URL
