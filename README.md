@@ -11,10 +11,13 @@ Say goodbye to manually searching through the Unity Editor's project window or h
 - **Pinning/Favoriting Scenes**
 
 ## Installation
-### Git URL
 
-Project supports Unity Package Manager. To install the project as a Git package do the following:
+- The package is available on the [openupm registry](https://openupm.com). You can install it via [openupm-cli](https://github.com/openupm/openupm-cli).
+```
+openupm add com.tf.scenebrowser
+```
 
-1. In Unity, open **Window** -> **Package Manager**.
-2. Press the **+** button, choose "**Add package from git URL...**"
-3. Enter "https://github.com/Theo-Farnole/Unity-SceneBrowser.git#1.0.4" and press **Add**.
+- Project supports Unity Package Manager. To install the project as a Git package do the following:
+1. In Unity, open **Window** -> **Package Manager**.   
+2. Press the **+** button, choose "**Add package from git URL...**"   
+3. Enter "https://github.com/Theo-Farnole/Unity-SceneBrowser.git#main" and press **Add**.   
