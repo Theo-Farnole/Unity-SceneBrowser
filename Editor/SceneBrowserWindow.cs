@@ -55,7 +55,7 @@
                     if (loadedScene != null)
                     {
                         GUILayout.Label("Loaded Scenes", EditorStyles.boldLabel);
-                        SceneDataGUI.DrawLayout(loadedScene);
+                        SceneDataGUI.SceneControls(loadedScene);
                     }
 
                     GUIHelper.DrawSeparator();
@@ -140,7 +140,7 @@
         {
             foreach (SceneData scene in scenesToDraw)
             {
-                SceneDataGUI.DrawLayout(scene);
+                SceneDataGUI.SceneControls(scene);
             }
         }
 

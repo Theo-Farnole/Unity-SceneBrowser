@@ -8,18 +8,19 @@
     {
         private const int WIDTH_PX_BUTTONS = 100;
 
-        public static void DrawLayout(SceneData sceneAsset)
+        public static void SceneControls(SceneData sceneAsset)
         {
             GUILayout.BeginHorizontal();
             {
-                DrawFavoriteButton(sceneAsset);
+                FavoriteButton(sceneAsset);
                 GUILayout.Label(sceneAsset.Name);
-                DrawOpenButtons(sceneAsset);
+
+                SideButtons(sceneAsset);
             }
             GUILayout.EndHorizontal();
         }
 
-        private static void DrawFavoriteButton(SceneData sceneAsset)
+        private static void FavoriteButton(SceneData sceneAsset)
         {
             var buttonTexture = Favorites.IsSceneFavorite(sceneAsset) ? Icons.Pinned : Icons.Unpin;
 
@@ -32,8 +33,13 @@
             }
         }
 
-        private static void DrawOpenButtons(SceneData sceneAsset)
+        private static void SideButtons(SceneData sceneAsset)
         {
+            if (GUILayout.Button("Select", GUILayout.Width(WIDTH_PX_BUTTONS), GUILayout.ExpandWidth(false)))
+            {
+                HighlightInProjectWindow(sceneAsset);
+            }
+
             if (sceneAsset.IsLoaded == true)
             {
                 bool shouldClose = GUIHelper.DrawColoredButton("Close", Color.red, GUILayout.Width(WIDTH_PX_BUTTONS * 2), GUILayout.ExpandWidth(false));
@@ -45,7 +51,7 @@
             }
             else
             {
-                int clickedButton = GUILayout.Toolbar(-1, new string[] { "Open", "+", "Select" }, GUILayout.Width(WIDTH_PX_BUTTONS * 2));
+                int clickedButton = GUILayout.Toolbar(-1, new string[] { "Open", "Add" }, GUILayout.Width(WIDTH_PX_BUTTONS * 2));
 
                 switch (clickedButton)
                 {
@@ -56,12 +62,13 @@
                     case 1:
                         sceneAsset.OpenScene(OpenSceneMode.Additive);
                         break;
-
-                    case 2:
-                        Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(sceneAsset.Path);
-                        break;
                 }
             }
+        }
+
+        private static void HighlightInProjectWindow(SceneData sceneAsset)
+        {
+            Selection.activeObject = AssetDatabase.LoadMainAssetAtPath(sceneAsset.Path);
         }
     }
 }
