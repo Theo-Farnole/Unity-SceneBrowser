@@ -33,20 +33,12 @@
 
         protected void OnGUI()
         {
-            GUILayout.BeginHorizontal(EditorStyles.toolbar);
-            {
-                _searchString = GUILayout.TextField(_searchString, GUI.skin.FindStyle("ToolbarSeachTextField"), GUILayout.Width(250));
+            DrawToolbar();
+            DrawContent();
+        }
 
-                GUILayout.FlexibleSpace();
-
-                if (GUILayout.Button(Icons.Refresh, EditorStyles.toolbarButton))
-                {
-                    SetScenesAssets();
-                }
-            }
-            GUILayout.EndHorizontal();
-
-
+        private void DrawContent()
+        {
             _scrollPosition = GUILayout.BeginScrollView(_scrollPosition);
             {
                 if (_searchString != "")
@@ -76,6 +68,30 @@
                 }
             }
             GUILayout.EndScrollView();
+        }
+
+        private void DrawToolbar()
+        {
+            GUILayout.BeginHorizontal(EditorStyles.toolbar);
+            {
+                _searchString = GUILayout.TextField(_searchString, GUI.skin.FindStyle("ToolbarSeachTextField"), GUILayout.Width(250));
+
+                if (_searchString != "")
+                {
+                    if (GUILayout.Button("", GUI.skin.FindStyle("ToolbarSeachCancelButton")))
+                    {
+                        _searchString = "";
+                    }
+                }
+
+                GUILayout.FlexibleSpace();
+
+                if (GUILayout.Button(Icons.Refresh, EditorStyles.toolbarButton))
+                {
+                    SetScenesAssets();
+                }
+            }
+            GUILayout.EndHorizontal();
         }
 
         private SceneData[] SearchScenes(string searchTerm)
