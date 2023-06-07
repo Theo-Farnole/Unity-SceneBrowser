@@ -6,7 +6,7 @@
 
     public static class SceneDataGUI
     {
-        private const int WIDTH_PX_BUTTONS = 100;
+        private const int WIDTH_PX_BUTTONS = 70;
 
         public static void SceneControls(SceneData sceneAsset)
         {
