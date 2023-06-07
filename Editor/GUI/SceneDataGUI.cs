@@ -13,7 +13,10 @@
             GUILayout.BeginHorizontal();
             {
                 FavoriteButton(sceneAsset);
-                GUILayout.Label(sceneAsset.Name);
+                if (GUILayout.Button(sceneAsset.Name, "Label"))
+                {
+                    sceneAsset.OpenScene(OpenSceneMode.Single);
+                }
 
                 SideButtons(sceneAsset);
             }
